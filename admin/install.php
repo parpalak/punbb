@@ -375,28 +375,20 @@ if (!isset($_POST['form_sent']))
 }
 else
 {
-	//
-	// Strip slashes only if magic_quotes_gpc is on.
-	//
-	function unescape($str)
-	{
-		return (get_magic_quotes_gpc() == 1) ? stripslashes($str) : $str;
-	}
-
 
 	$db_type = $_POST['req_db_type'];
 	$db_host = forum_trim($_POST['req_db_host']);
 	$db_name = forum_trim($_POST['req_db_name']);
-	$db_username = unescape(forum_trim($_POST['db_username']));
-	$db_password = unescape(forum_trim($_POST['db_password']));
+	$db_username = forum_trim($_POST['db_username']);
+	$db_password = forum_trim($_POST['db_password']);
 	$db_prefix = forum_trim($_POST['db_prefix']);
-	$username = unescape(forum_trim($_POST['req_username']));
-	$email = unescape(strtolower(forum_trim($_POST['req_email'])));
-	$password1 = unescape(forum_trim($_POST['req_password1']));
-	$password2 = unescape(forum_trim($_POST['req_password2']));
-	$board_title = unescape(forum_trim($_POST['board_title']));
-	$board_descrip = unescape(forum_trim($_POST['board_descrip']));
-	$default_lang = preg_replace('#[\.\\\/]#', '', unescape(forum_trim($_POST['req_language'])));
+	$username = forum_trim($_POST['req_username']);
+	$email = strtolower(forum_trim($_POST['req_email']));
+	$password1 = forum_trim($_POST['req_password1']);
+	$password2 = forum_trim($_POST['req_password2']);
+	$board_title = forum_trim($_POST['board_title']);
+	$board_descrip = forum_trim($_POST['board_descrip']);
+	$default_lang = preg_replace('#[\.\\\/]#', '', forum_trim($_POST['req_language']));
 	$install_pun_repository = !empty($_POST['install_pun_repository']);
 
 	// Make sure base_url doesn't end with a slash

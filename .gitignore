@@ -7,7 +7,6 @@ style/*/*
 !style/Oxygen
 lang/*/*
 !lang/English
-extensions/*/*
 config.php
 cache/
 img/avatars/

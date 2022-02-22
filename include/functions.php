@@ -1635,7 +1635,7 @@ function get_tracked_topics()
 	if ($return != null)
 		return $return;
 
-	$cookie_data = isset($_COOKIE[$cookie_name.'_track']) ? $_COOKIE[$cookie_name.'_track'] : false;
+	$cookie_data = $_COOKIE[$cookie_name . '_track'] ?? false;
 	if (!$cookie_data)
 		return array('topics' => array(), 'forums' => array());
 
@@ -1646,18 +1646,19 @@ function get_tracked_topics()
 	$tracked_topics = array('topics' => array(), 'forums' => array());
 	foreach (explode(';', $cookie_data) as $id_data)
 	{
-		switch (substr($id_data, 0, 1))
+		switch ($id_data[0])
 		{
 			case 'f': $type = 'forums'; break;
 			case 't': $type = 'topics'; break;
-			default: continue;
+			default:
+                continue 2;
 		}
 
-		$id = intval(substr($id_data, 1));
+		$id = (int)substr($id_data, 1);
 
 		if (($pos = strpos($id_data, '=')) === false)
 			continue;
-		$timestamp = intval(substr($id_data, $pos + 1));
+		$timestamp = (int)substr($id_data, $pos + 1);
 
 		if ($id > 0 && $timestamp > 0)
 			$tracked_topics[$type][$id] = $timestamp;

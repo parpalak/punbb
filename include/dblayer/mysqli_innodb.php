@@ -36,6 +36,7 @@ class DBLayer
 		if (strpos($db_host, ':') !== false)
 			list($db_host, $db_port) = explode(':', $db_host);
 
+        mysqli_report(MYSQLI_REPORT_OFF);
 		if (isset($db_port))
 			$this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name, $db_port);
 		else
@@ -109,10 +110,13 @@ class DBLayer
 	{
 		if ($query_id)
 		{
-			if ($row)
-				@mysqli_data_seek($query_id, $row);
+            if ($row !== 0 && @mysqli_data_seek($query_id, $row) === false)
+                return false;
 
-			$cur_row = @mysqli_fetch_row($query_id);
+            $cur_row = @mysqli_fetch_row($query_id);
+            if ($cur_row === false || $cur_row === null)
+                return false;
+
 			return $cur_row[$col];
 		}
 		else
@@ -188,7 +192,7 @@ class DBLayer
 	{
 		if ($this->link_id)
 		{
-			if ($this->query_result)
+            if (!is_bool($this->query_result))
 				@mysqli_free_result($this->query_result);
 
 			return @mysqli_close($this->link_id);

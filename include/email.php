@@ -96,13 +96,16 @@ function forum_mail($to, $subject, $message, $reply_to_email = '', $reply_to_nam
 		smtp_mail($to, $subject, $message, $headers);
 	else
 	{
-		// Change the linebreaks used in the headers according to OS
-		if (strtoupper(substr(PHP_OS, 0, 3)) == 'MAC')
-			$headers = str_replace("\r\n", "\r", $headers);
-		else if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN')
-			$headers = str_replace("\r\n", "\n", $headers);
+        if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 80000) {
+            // Change the linebreaks used in the headers according to OS
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'MAC') {
+                $headers = str_replace("\r\n", "\r", $headers);
+            } elseif (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+                $headers = str_replace("\r\n", "\n", $headers);
+            }
+        }
 
-		mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers);
 	}
 }
 

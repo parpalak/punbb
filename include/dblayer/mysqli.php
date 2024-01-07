@@ -222,8 +222,17 @@ class DBLayer
 
 	function free_result($query_id = false)
 	{
-		return ($query_id) ? @mysqli_free_result($query_id) : false;
-	}
+        if (($query_id)) {
+            @mysqli_free_result($query_id);
+            if ($query_id === $this->query_result) {
+                $query_id = false;
+                $this->query_result = false;
+            }
+            return true;
+        }
+
+        return false;
+    }
 
 
 	function escape($str)
